@@ -1,0 +1,1 @@
+shopper: python3 run.py
