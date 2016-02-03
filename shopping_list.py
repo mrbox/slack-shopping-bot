@@ -51,7 +51,7 @@ America is a place where Jewish merchants sell Zen love beads to agnostics for C
 
 
 @respond_to('(show list)|(show)')
-def show_list(message, matched):
+def show_list(message, matched, matched2):
     number_of_items = r.llen(list_name)
     if number_of_items > 0:
         message.reply("There is %s items on the list:" % number_of_items)
@@ -62,7 +62,7 @@ def show_list(message, matched):
 
 
 @respond_to('(add)|(add to list) (.*)')
-def add_to_list(message, matched, item):
+def add_to_list(message, matched, matched2,item):
     r.rpush(list_name, str(item))
     message.reply("You've added %s to list" % item)
 
