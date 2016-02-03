@@ -7,6 +7,7 @@ r = redis.StrictRedis(host=os.environ['REDIS_HOST'], port=os.environ['REDIS_PORT
 list_name = 'shopping_list'
 
 
+@respond_to('show')
 @respond_to('show list')
 def show_list(message):
     number_of_items = r.llen(list_name)
@@ -18,12 +19,14 @@ def show_list(message):
         message.reply("List is empty")
 
 
+@respond_to('add (.*)')
 @respond_to('add to list (.*)')
 def add_to_list(message, item):
     r.rpush(list_name, str(item))
     message.reply("You've added %s to list" % item)
 
 
+@respond_to('clear')
 @respond_to('clear list')
 def show_list(message):
     r.delete(list_name)
