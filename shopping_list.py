@@ -57,7 +57,7 @@ def show_list(message, *args):
     if number_of_items > 0:
         response = ["There is %s items on the list:" % number_of_items]
         for idx, obj in enumerate(r.lrange(list_name, 0, r.llen(list_name) + 1), 1):
-            response.append("  %s %s" % (idx, obj.decode('utf-8')))
+            response.append("  %s) %s" % (idx, obj.decode('utf-8')))
         message.send("\n".join(response))
     else:
         message.reply("List is empty")
