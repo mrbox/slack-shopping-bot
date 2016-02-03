@@ -76,7 +76,7 @@ def show_list(message, matched):
 
 @respond_to('remove (\d+)')
 def remove_item(message, item_index):
-    item = r.lindex(list_name, item_index - 1)
+    item = r.lindex(list_name, int(item_index) - 1)
     r.lrem(list_name, 0, item)
     message.reply("You've removed %s from the shopping list" % item.decode('utf-8'))
 
