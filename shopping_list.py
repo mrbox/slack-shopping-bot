@@ -13,14 +13,14 @@ def show_list(message):
     if number_of_items > 0:
         message.reply("There is %s items on the list:" % number_of_items)
         for obj in r.lrange(list_name, 0, r.llen(list_name) + 1):
-            message.reply("* %s" % obj)
+            message.reply("* %s" % str(obj))
     else:
         message.reply("List is empty")
 
 
 @respond_to('add to list (.*)')
 def add_to_list(message, item):
-    r.rpush(list_name, item)
+    r.rpush(list_name, str(item))
     message.reply("You've added %s to list" % item)
 
 
