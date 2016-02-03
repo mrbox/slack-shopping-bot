@@ -81,5 +81,5 @@ def remove_item(message, item_index):
 
 
 @respond_to('(.*)')
-def catchall(message):
+def catchall(message, text):
     message.reply(random.choice(catchall_responses))
