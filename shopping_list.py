@@ -54,9 +54,10 @@ America is a place where Jewish merchants sell Zen love beads to agnostics for C
 def show_list(message, matched, matched2):
     number_of_items = r.llen(list_name)
     if number_of_items > 0:
-        message.reply("There is %s items on the list:" % number_of_items)
+        response = ["There is %s items on the list:" % number_of_items]
         for idx, obj in enumerate(r.lrange(list_name, 0, r.llen(list_name) + 1), 1):
-            message.send("%s %s" % (idx, obj.decode('utf-8')))
+            response.append("  %s %s" % (idx, obj.decode('utf-8')))
+        message.send("\n".join(response))
     else:
         message.reply("List is empty")
 
