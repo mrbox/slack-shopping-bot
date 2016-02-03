@@ -13,7 +13,7 @@ def show_list(message):
     if number_of_items > 0:
         message.reply("There is %s items on the list:" % number_of_items)
         for obj in r.lrange(list_name, 0, r.llen(list_name) + 1):
-            message.reply("* %s" % str(obj))
+            message.reply("* %s" % obj.decode('utf-8'))
     else:
         message.reply("List is empty")
 
