@@ -62,7 +62,7 @@ def show_list(message, matched, matched2):
 
 
 @respond_to('(add)|(add to list) (.*)')
-def add_to_list(message, matched, matched2,item):
+def add_to_list(message, matched, matched2, item):
     r.rpush(list_name, str(item))
     message.reply("You've added %s to list" % item)
 
@@ -75,9 +75,9 @@ def show_list(message, matched):
 
 @respond_to('remove (\d+)')
 def remove_item(message, item_index):
-    item = r.lindex(list_name, item_index)
+    item = r.lindex(list_name, item_index - 1)
     r.lrem(list_name, 0, item)
-    message.reply("You've removed %s from the shopping list" % item)
+    message.reply("You've removed %s from the shopping list" % item.decode('utf-8'))
 
 
 @respond_to('(.*)')
