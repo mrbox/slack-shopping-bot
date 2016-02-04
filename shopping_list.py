@@ -1,6 +1,6 @@
 import os
 import re
-from random import random
+import random
 
 import redis
 from slackbot.bot import respond_to
