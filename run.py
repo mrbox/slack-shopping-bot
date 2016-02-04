@@ -1,6 +1,6 @@
 from slackbot.bot import Bot
 
-import shopping_listfi
+import shopping_list
 
 def main():
     bot = Bot()
