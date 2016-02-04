@@ -67,9 +67,8 @@ def show_list(message, *args):
 
 @respond_to('(add|add to list) (.*)', re.I)
 def add_to_list(message, *args):
-    for message in message.split(","):
-        message = message.strip()
-        item=args[-1]
+    for item in args[-1].split(","):
+        item = item.strip()
         user = message._client.users[message._body['user']]
         r.rpush(list_name, "*%s* (by %s)" % (str(item), user['name']))
         message.reply("You've added %s to list" % item)
