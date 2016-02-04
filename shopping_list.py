@@ -1,4 +1,5 @@
 import os
+import re
 from random import random
 
 import redis
@@ -50,36 +51,37 @@ Jesus was a Jew, yes, but only on his mother's side. - Archie Bunker
 America is a place where Jewish merchants sell Zen love beads to agnostics for Christmas. - John Burton""".split('\n')
 
 
-@respond_to('(show list)|show')
+@respond_to('(show list)|show', re.I)
 def show_list(message):
     number_of_items = r.llen(list_name)
     if number_of_items > 0:
         message.reply("There is %s items on the list:" % number_of_items)
         for idx, obj in enumerate(r.lrange(list_name, 0, r.llen(list_name) + 1), 1):
-            message.send("%s %s" % (idx, obj.decode('utf-8')))
+            message.send("%s) %s" % (idx, obj.decode('utf-8')))
     else:
         message.reply("List is empty")
 
 
-@respond_to('(add)|(add to list) (.*)')
+@respond_to('(add)|(add to list) (.*)', re.I)
 def add_to_list(message, item):
-    r.rpush(list_name, str(item))
+    user = message._client.users[message._body['user']]
+    r.rpush(list_name, str(item) + ' (by %s)' % user)
     message.reply("You've added %s to list" % item)
 
 
-@respond_to('clear|(clear list)')
+@respond_to('clear|(clear list)', re.I)
 def show_list(message):
     r.delete(list_name)
     message.reply("You've cleared the shopping list")
 
 
-@respond_to('remove (\d+)')
+@respond_to('remove (\d+)', re.I)
 def remove_item(message, item_index):
     item = r.lindex(list_name, item_index)
     r.lrem(list_name, 0, item)
     message.reply("You've removed %s from the shopping list" % item)
 
 
-@respond_to('(.*)')
+@respond_to('(.*)', re.I)
 def catchall(message, text):
-    message.reply(random.choice(catchall_responses))
+    message.reply("_" + random.choice(catchall_responses) + "_")
