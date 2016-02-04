@@ -63,3 +63,4 @@ target/
 
 # Custom
 .idea
+.env
