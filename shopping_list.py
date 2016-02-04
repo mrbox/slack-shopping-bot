@@ -69,7 +69,7 @@ def show_list(message, *args):
 def add_to_list(message, *args):
     item=args[-1]
     user = message._client.users[message._body['user']]
-    r.rpush(list_name, str(item) + ' (by %s)' % user['name'])
+    r.rpush(list_name, "*%s* (by %s)" % (str(item), user['name']))
     message.reply("You've added %s to list" % item)
     message.send("_%s_" % random.choice(catchall_responses))
 
