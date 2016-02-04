@@ -62,7 +62,7 @@ def show_list(message, *args):
     else:
         message.reply("List is empty")
 
-    message.send(random.choice(catchall_responses))
+    message.send("_%s_" % random.choice(catchall_responses))
 
 
 @respond_to('(add|add to list) (.*)', re.I)
@@ -71,14 +71,14 @@ def add_to_list(message, *args):
     user = message._client.users[message._body['user']]
     r.rpush(list_name, str(item) + ' (by %s)' % user['name'])
     message.reply("You've added %s to list" % item)
-    message.send(random.choice(catchall_responses))
+    message.send("_%s_" % random.choice(catchall_responses))
 
 
 @respond_to('(clear|clear list)', re.I)
 def show_list(message, matched):
     r.delete(list_name)
     message.reply("You've cleared the shopping list")
-    message.send(random.choice(catchall_responses))
+    message.send("_%s_" % random.choice(catchall_responses))
 
 
 @respond_to('remove (\d+)', re.I)
@@ -89,4 +89,4 @@ def remove_item(message, item_index):
         return
     r.lrem(list_name, 0, item)
     message.reply("You've removed %s from the shopping list" % item.decode('utf-8'))
-    message.send(random.choice(catchall_responses))
+    message.send("_%s_" % random.choice(catchall_responses))
