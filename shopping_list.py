@@ -90,7 +90,7 @@ def remove_item(message, item_index):
     if item is None:
         message.reply("There is just %s items on the list" % r.llen(list_name))
         return
-    if item.find('(by %s)' % user['name']) > 0:
+    if item.decode('utf-8').find('(by %s)' % user['name']) > 0:
         r.lrem(list_name, 0, item)
         message.reply("You've removed %s from the shopping list" % item.decode('utf-8'))
     else:
