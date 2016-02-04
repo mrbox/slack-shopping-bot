@@ -1,5 +1,6 @@
 import os
-import random
+import re
+from random import random
 
 import redis
 from slackbot.bot import respond_to
@@ -50,7 +51,7 @@ Jesus was a Jew, yes, but only on his mother's side. - Archie Bunker
 America is a place where Jewish merchants sell Zen love beads to agnostics for Christmas. - John Burton""".split('\n')
 
 
-@respond_to('(show list|show)')
+@respond_to('(show list|show)', re.I)
 def show_list(message, *args):
     number_of_items = r.llen(list_name)
     if number_of_items > 0:
@@ -64,22 +65,23 @@ def show_list(message, *args):
     message.send(random.choice(catchall_responses))
 
 
-@respond_to('(add|add to list) (.*)')
+@respond_to('(add|add to list) (.*)', re.I)
 def add_to_list(message, *args):
     item=args[-1]
-    r.rpush(list_name, str(item))
+    user = message._client.users[message._body['user']]
+    r.rpush(list_name, str(item) + ' (by %s)' % user)
     message.reply("You've added %s to list" % item)
     message.send(random.choice(catchall_responses))
 
 
-@respond_to('(clear|clear list)')
+@respond_to('(clear|clear list)', re.I)
 def show_list(message, matched):
     r.delete(list_name)
     message.reply("You've cleared the shopping list")
     message.send(random.choice(catchall_responses))
 
 
-@respond_to('remove (\d+)')
+@respond_to('remove (\d+)', re.I)
 def remove_item(message, item_index):
     item = r.lindex(list_name, int(item_index) - 1)
     if item is None:
