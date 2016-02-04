@@ -62,6 +62,8 @@ def show_list(message, *args):
     else:
         message.reply("List is empty")
 
+    message.send(random.choice(catchall_responses))
+
 
 @respond_to('(add|add to list) (.*)', re.I)
 def add_to_list(message, *args):
