@@ -67,11 +67,13 @@ def show_list(message, *args):
 
 @respond_to('(add|add to list) (.*)', re.I)
 def add_to_list(message, *args):
-    item=args[-1]
-    user = message._client.users[message._body['user']]
-    r.rpush(list_name, "*%s* (by %s)" % (str(item).title(), user['name']))
-    message.reply("You've added %s to list" % item)
-    message.send("_%s_" % random.choice(catchall_responses))
+    for message in message.split(","):
+        message = message.strip()
+        item=args[-1]
+        user = message._client.users[message._body['user']]
+        r.rpush(list_name, "*%s* (by %s)" % (str(item), user['name']))
+        message.reply("You've added %s to list" % item)
+        message.send("_%s_" % random.choice(catchall_responses))
 
 
 @respond_to('(clear|clear list)', re.I)
