@@ -99,7 +99,7 @@ def remove_item(message, item_index):
     message.send("_%s_" % random.choice(catchall_responses))
 
 @respond_to('(?:tell )?(?:joke|wisdom|quote)', re.I)
-def wisdom(message, item_index):
+def wisdom(message):
     message.reply("_%s_" % random.choice(catchall_responses))
 
 
