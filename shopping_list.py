@@ -51,8 +51,8 @@ Jesus was a Jew, yes, but only on his mother's side. - Archie Bunker
 America is a place where Jewish merchants sell Zen love beads to agnostics for Christmas. - John Burton""".split('\n')
 
 
-@respond_to('(show list)|show', re.I)
-def show_list(message):
+@respond_to('(show list|show)', re.I)
+def show_list(message, *args):
     number_of_items = r.llen(list_name)
     if number_of_items > 0:
         response = ["There is %s items on the list:" % number_of_items]
@@ -63,17 +63,20 @@ def show_list(message):
         message.reply("List is empty")
 
 
-@respond_to('(add)|(add to list) (.*)', re.I)
-def add_to_list(message, item):
+@respond_to('(add|add to list) (.*)', re.I)
+def add_to_list(message, *args):
+    item=args[-1]
     user = message._client.users[message._body['user']]
     r.rpush(list_name, str(item) + ' (by %s)' % user)
     message.reply("You've added %s to list" % item)
+    message.send(random.choice(catchall_responses))
 
 
-@respond_to('clear|(clear list)', re.I)
-def show_list(message):
+@respond_to('(clear|clear list)', re.I)
+def show_list(message, matched):
     r.delete(list_name)
     message.reply("You've cleared the shopping list")
+    message.send(random.choice(catchall_responses))
 
 
 @respond_to('remove (\d+)', re.I)
@@ -81,8 +84,4 @@ def remove_item(message, item_index):
     item = r.lindex(list_name, int(item_index) - 1)
     r.lrem(list_name, 0, item)
     message.reply("You've removed %s from the shopping list" % item.decode('utf-8'))
-
-
-@respond_to('(.*)', re.I)
-def catchall(message, text):
-    message.reply("_" + random.choice(catchall_responses) + "_")
+    message.send(random.choice(catchall_responses))
