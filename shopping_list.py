@@ -71,7 +71,7 @@ def add_to_list(message, items):
         item = item.strip()
         user = message._client.users[message._body['user']]
         r.rpush(list_name, "*%s* (by %s)" % (str(item), user['name']))
-    message.reply("You've added %s to list" % args[-1])
+    message.reply("You've added %s to list" % items)
     message.send("_%s_" % random.choice(catchall_responses))
 
 
